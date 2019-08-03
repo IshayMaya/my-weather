@@ -5,7 +5,7 @@ const initialState = {
     fiveDayForecast: null,
     currentConditions: null,
     currentLocation: null,
-    favoriteList:null
+    favoriteList: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -13,7 +13,7 @@ const reducer = (state = initialState, action) => {
         case actions.SET_FORECAST:
             let { forecast } = action
             return {
-                ...initialState,
+                ...state,
                 fiveDayForecast: forecast.DailyForecasts,
                 currentLocation: forecast.location,
                 currentConditions: forecast.currentConditions
@@ -21,8 +21,22 @@ const reducer = (state = initialState, action) => {
         case actions.SET_FAVORITES:
             let { favorites } = action
             return {
-                ...initialState,
-                favoriteList:favorites
+                ...state,
+                favoriteList: favorites
+            }
+        case actions.UPDATE_FAVORITE_LOCATION:
+            let { updatedLocation } = action
+            console.log('updatedLocation : ',updatedLocation);
+            if (!updatedLocation) return {
+                ...state,
+                currentLocation: { 
+                    ...state.currentLocation,
+                     isOnFavorites: !state.currentLocation.isOnFavorites
+                    } 
+                }
+            return {
+                ...state,
+                currentLocation:updatedLocation
             }
 
     }

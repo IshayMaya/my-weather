@@ -1,0 +1,36 @@
+.day {
+    clip-path: polygon(50% 0%, 100% 0, 100% 90%, 50% 100%, 0 90%, 0 0);
+    background-color: #eeeeee75;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    // height: 90%;
+
+    h2,p {
+        margin: 0;
+    }
+
+    img {
+        height: 1.8rem;
+    }
+}
+
+.degrees {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding: 10px 0;
+
+    :nth-child(1) {
+        font-size: .9rem;
+        color: #00000082;
+        font-weight: 700;
+        margin-right: 5px;
+    }
+    :nth-child(2) {
+        font-size: 1.2rem;
+        color: #000000ab;
+        font-weight: 900;
+    }
+
+}

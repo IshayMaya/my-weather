@@ -5,6 +5,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url('./assets/img/forest2.jpg');
+  /* background-image: url('./assets/img/winter.jpg'); */
+  background-size: cover;
+  background-position: center;
+  color: white;
+  min-height: 100vh;
+
 }
 
 code {

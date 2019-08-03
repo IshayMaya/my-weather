@@ -2,11 +2,20 @@ import * as actionTypes from './actionTypes'
 import weatherService from '../../service/weatherService'
 
 
+export const updateFavoriteLocation = updatedLocation => {
+    return {
+        type: actionTypes.UPDATE_FAVORITE_LOCATION,
+        updatedLocation
+    }
+}
+
 export const addToFavorites = () => {
     return async (dispatch, getState) => {
         let location = getState().forecast.currentLocation
         let conditions = getState().forecast.currentConditions
-        let res = await weatherService.addToFavorites(location, conditions)
+        dispatch(updateFavoriteLocation())
+        let updatedLocation = await weatherService.toggleLocationFromFavorites(location, conditions)
+        dispatch(updateFavoriteLocation(updatedLocation))
     }
 }
 
@@ -20,6 +29,7 @@ export const setFavorites = (favorites) => {
 export const loadFavorites = () => {
     return async (dispatch) => {
         let favorites = await weatherService.getFavorites()
+        console.log('got this : ',favorites);
         dispatch(setFavorites(favorites))
     }
 }

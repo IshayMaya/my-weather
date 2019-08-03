@@ -1,0 +1,22 @@
+.locations {
+    margin: 0;
+    padding: 10px;
+    width: 90%;
+    // height: 100%;
+    box-sizing: border-box;
+    border-radius: 3px;
+    // height: 100%;
+    // width: 80%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px , 320px));
+    // grid-template-rows: auto;
+    grid-gap: 10px 20px;
+    justify-content: space-evenly;
+    // background-color: #eeeeee24;
+    transition: .4s ease;
+
+    a { 
+        text-decoration: none;
+        color: white;
+    }
+}

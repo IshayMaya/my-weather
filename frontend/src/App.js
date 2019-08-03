@@ -12,7 +12,7 @@ function App() {
       <Header />
       <Switch>
           <Route path="/favorites" component={Favorites} />
-          <Route path="/" component={Main} />
+          <Route path="/:cityName?" component={Main} />
       </Switch>
     </div>
     </BrowserRouter>

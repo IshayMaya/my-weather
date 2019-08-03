@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower|Patrick+Hand&display=swap');
+
+.header{
+    position: absolute;
+    max-height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 4%;
+    box-sizing: border-box;
+    transition: .3s ease;
+    
+    h2 {
+        margin: 0;
+    }
+    
+    a { 
+        color: white;
+        font-weight: 900;
+        font-size: 1.5rem;
+        text-decoration: none;
+        // font-family: 'Fredoka One', cursive;
+        font-family: 'Indie Flower', cursive;
+        &:first-child{
+            margin-right: 10px;
+        }
+    }
+}
+
+.logo {
+    font-family: 'Pacifico', cursive;
+    font-size: 2rem;
+    color: #2b4348;
+}
+
+.links{
+    box-sizing: border-box;
+}
+
+.burger-btn {
+    background: none;
+    border: none;
+    outline: none;
+    display: none;
+    cursor: pointer;
+    
+}
+
+.header :global(a.active) {
+    text-decoration: underline;
+    color: #2b4348;
+}
+
+
+
+
+@media  (max-width: 480px) {
+    .links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 60vw;
+        background-color: #eeeeee;
+        display: flex;
+        flex-direction: column;
+        padding-top: 10px;
+        z-index: 10;
+        transition: .3s ease;
+
+    }
+
+    .burger-btn {
+        display: block;
+    }
+
+    .hide {
+        transform: translate(-60vw,0)
+    }
+    .show {
+        transform: translate(0,0)
+    }
+}
+

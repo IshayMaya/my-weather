@@ -11,15 +11,25 @@ import * as actions from '../../store/actions/favorites'
 const weatherDetails = props =>  {
     let detailsBody = <Spinner />
     if (props.dailyForecasts) detailsBody = (
-        <div>
-            <button className={classes['add-btn']} onClick={props.onAddToFavorites}><i class="fas fa-heart"></i></button>
-            <Headline forecast={props.currentConditions} />
-            <Days forecast={props.dailyForecasts} />
+        <div className={classes.details}>
+            <Headline forecast={props.currentConditions} location={props.currentLocation} addToFavorites={props.onAddToFavorites}/>
+            <section className={classes['details-bottom']}>
+                <section className={classes['details-conditions']}>
+                    <h2>{props.currentConditions.Temperature.Metric.Value}&#730;</h2>
+                    <h1>{props.currentConditions.WeatherText}</h1>
+                </section>
+                <Days forecast={props.dailyForecasts} />
+            </section>
         </div>
     )
     return <>{detailsBody}</>
 }
 
+const mapStateToProps = state => {
+    return {
+        favoriteList: state.forecast.favoriteList,
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -27,4 +37,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(weatherDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(weatherDetails);

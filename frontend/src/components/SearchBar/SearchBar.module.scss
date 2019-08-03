@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One|Orbitron&display=swap');
+
+
+.search-form {
+    box-sizing: border-box;
+    width: 40%;
+    position: relative;
+    margin-bottom: 10vh;
+    
+    input {
+        border: 1px solid #6d9eaa;
+        background-color: #eeeeee;
+        border-radius: 3px;
+        padding: 10px 5px;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 5px;
+        box-sizing: border-box;
+        font-family: 'Work Sans', sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    ul {
+        list-style: none;
+        width: 100%;
+        padding: 5px;
+        margin: 0;
+        text-align: left;
+        box-sizing: border-box;
+        position: absolute;
+        background-color: #eeeeee;
+        top: 40px;
+        z-index: 1;
+        transition: .3s ease;
+
+        li { 
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            font-size: .8rem;
+            transition: .3s ease;
+
+            &:hover {
+                background-color: #80808036;
+            }
+        }
+    }
+}

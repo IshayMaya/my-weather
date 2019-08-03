@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Locations from './Locations/Locations'
+import ErrorBoundary from '../../components/UI/ErrorBoundary/ErrorBoundary'
 import * as actions from '../../store/actions/favorites'
+import classes from './Favorites.module.scss'
 
 class Favorites extends Component {
     state = {}
     async componentDidMount() {
         await this.props.onLoadFavorites()
-        console.log('this.props.favoriteList : ',this.props.favoriteList);
+        console.log(this.props.history);
         
-
     }
     render() {
         return (
-            <Locations locations={this.props.favoriteList}/>
+            <section className={classes.favorites}>
+            <ErrorBoundary>
+                <Locations locations={this.props.favoriteList}/>
+            </ErrorBoundary>
+            </section>
         );
     }
 }

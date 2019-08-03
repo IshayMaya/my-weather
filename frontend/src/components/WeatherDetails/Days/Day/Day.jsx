@@ -10,18 +10,15 @@ const day = props => {
     let nightIcon = props.day.Night.Icon < 10 ? '0' + props.day.Night.Icon : props.day.Night.Icon
     let dayIcon = props.day.Day.Icon < 10 ? '0' + props.day.Day.Icon : props.day.Day.Icon
     return (
-        <div>
+        <div className={classes.day}>
             <h2>{moment(props.day.Date).format('ddd')}</h2>
-            {/* <h3>{avgTemperature } &#8451;</h3> */}
-            <section className={classes.night}>
-                <p>{props.day.Night.IconPhrase}</p>
-                <img src={`https://developer.accuweather.com/sites/default/files/${nightIcon}-s.png`} alt={props.day.Night.IconPhrase} srcset=""/>
-                <p>{props.day.Temperature.Minimum.Value}</p>
-            </section>
-            <section className={classes.day}>
+            <section className={classes['day-body']}>
+                <img src={`https://developer.accuweather.com/sites/default/files/${dayIcon}-s.png`} alt={props.day.Night.IconPhrase} />
                 <p>{props.day.Day.IconPhrase}</p>
-                <img src={`https://developer.accuweather.com/sites/default/files/${dayIcon}-s.png`} alt={props.day.Night.IconPhrase} srcset=""/>
-                <p>{props.day.Temperature.Minimum.Value}</p>
+                <section className={classes.degrees}>
+                    <div>{props.day.Temperature.Maximum.Value}</div>
+                    <div>{props.day.Temperature.Minimum.Value}</div>
+                </section>
             </section>
         </div>
     )

@@ -1,19 +1,35 @@
-import React from 'react'
-import classes from './Header.module.scss'
-import {NavLink} from 'react-router-dom'
+import React, { Component } from 'react'
+import './Header.scss'
+import { NavLink } from 'react-router-dom'
+import Icon from '@material-ui/core/Icon'
+import BackDrop from '../UI/BackDrop/BackDrop'
 
-const header = props => {
 
-    return (
-        <nav className={classes.header}>
-            <h2 className={classes.logo}>My Weather</h2>
-            <section className={classes.links}>
-                <NavLink to="/" exact>Main</NavLink>
-                <NavLink to="/favorites" exact>Favorites</NavLink>
-            </section>
-        </nav>
+class Header extends Component {
+    state = {
+        isNavOpen: false
+    }
 
-    )
+    toggleNavHandler = () => {
+        this.setState(prevState => {
+            let { isNavOpen } = prevState
+            return { isNavOpen: !isNavOpen }
+        })
+    }
+    render() {
+  
+        return (
+            <nav className='header' >
+                <h2 className='logo'>My Weather</h2>
+                <section className={`links ${this.state.isNavOpen ? 'show' : 'hide'}`}>
+                    <NavLink to="/" exact onClick={this.toggleNavHandler}>Main</NavLink>
+                    <NavLink to="/favorites" exact onClick={this.toggleNavHandler}>Favorites</NavLink>
+                </section>
+                <BackDrop show={this.state.isNavOpen} clicked={this.toggleNavHandler}/>
+                <button className='burger-btn' onClick={this.toggleNavHandler}><Icon>dashboard</Icon></button>
+            </nav>
+        );
+    }
 }
 
-export default header
+export default Header;

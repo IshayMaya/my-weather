@@ -1,0 +1,25 @@
+
+
+.days {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    // min-height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Work Sans', sans-serif;
+
+
+    ul {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        // display: flex;
+        // justify-content: space-between;
+        display: grid;
+        grid-template-columns: repeat(5,1fr);
+        grid-gap: 10px;
+        height: 90%;
+    }
+}
