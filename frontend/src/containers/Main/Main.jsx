@@ -4,7 +4,6 @@ import SearchBar from '../../components/SearchBar/SearchBar'
 import WeatherDetails from '../../components/WeatherDetails/WeatherDetails'
 import * as actions from '../../store/actions/forecast'
 import classes from './Main.module.scss'
-import ErrorBoundary from '../../components/UI/ErrorBoundary/ErrorBoundary'
 
 
 class Main extends Component {
@@ -16,9 +15,6 @@ class Main extends Component {
 
     async componentWillMount() {
         let { dailyForecasts } = this.props
-        // let {cityName} = this.props.match.params
-        // if (cityName) return await this.props.onForecastLoad(cityName)
-        // if (!dailyForecasts) await this.props.onForecastLoad(this.state.defaultCity) 
         if (!dailyForecasts) await this.props.onGetCityNames(this.state.defaultCity)
     }
 
@@ -33,10 +29,7 @@ class Main extends Component {
         ev.preventDefault()
         let { cityName } = this.state
         let cityList = await this.props.onGetCityNames(cityName)
-        console.log(cityList);
         this.setState({ cityList,cityName:'' })
-
-        // await this.props.onForecastLoad(cityName)
     }
 
     getForecastHandler = async (city) => {
@@ -59,13 +52,11 @@ class Main extends Component {
                     cityList={this.state.cityList}
                     cityClicked={this.getForecastHandler}
                 />
-                <ErrorBoundary>
                     <WeatherDetails
                         dailyForecasts={this.props.dailyForecasts}
                         currentConditions={this.props.currentConditions}
                         currentLocation={this.props.currentLocation}
                     />
-                </ErrorBoundary>
             </section>
         );
     }

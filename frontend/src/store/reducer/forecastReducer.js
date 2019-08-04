@@ -5,7 +5,9 @@ const initialState = {
     fiveDayForecast: null,
     currentConditions: null,
     currentLocation: null,
-    favoriteList: null
+    favoriteList: null,
+    isLoadingForecast: false,
+    isError:false
 }
 
 const reducer = (state = initialState, action) => {
@@ -18,25 +20,45 @@ const reducer = (state = initialState, action) => {
                 currentLocation: forecast.location,
                 currentConditions: forecast.currentConditions
             }
+        case actions.TOGGLE_FORECAST_SPINNER:
+            let { isLoading } = action
+            return {
+                ...state,
+                isLoadingForecast: isLoading
+            }
         case actions.SET_FAVORITES:
             let { favorites } = action
             return {
                 ...state,
                 favoriteList: favorites
             }
-        case actions.UPDATE_FAVORITE_LOCATION:
-            let { updatedLocation } = action
-            console.log('updatedLocation : ',updatedLocation);
-            if (!updatedLocation) return {
-                ...state,
-                currentLocation: { 
-                    ...state.currentLocation,
-                     isOnFavorites: !state.currentLocation.isOnFavorites
-                    } 
-                }
+        case actions.CLEAR_FAVORITES:
             return {
                 ...state,
-                currentLocation:updatedLocation
+                favoriteList: null
+            }
+        case actions.UPDATE_FAVORITE_LOCATION:
+            let { updatedLocation } = action
+            if (!updatedLocation) return {
+                ...state,
+                currentLocation: {
+                    ...state.currentLocation,
+                    isOnFavorites: !state.currentLocation.isOnFavorites
+                }
+            }
+            return {
+                ...state,
+                currentLocation: updatedLocation
+            }
+        case actions.HANDLE_ERROR:
+            return {
+                ...state,
+                isError:true
+            }
+        case actions.CLOSE_ERROR_MODAL:
+            return {
+                ...state,
+                isError:false
             }
 
     }

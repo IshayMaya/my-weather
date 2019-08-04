@@ -18,9 +18,7 @@ const logger = store => {
             console.log('Middleware dispatching action ',action);
             const result = next(action)
             console.log('Middleware next state : ',store.getState());
-            
-            return result
-            
+            return result  
         }
     }
 }

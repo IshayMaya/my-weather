@@ -5,8 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('./assets/img/forest2.jpg');
-  /* background-image: url('./assets/img/winter.jpg'); */
+  background-image: url('./assets/img/forest3.jpg');
   background-size: cover;
   background-position: center;
   color: white;
@@ -17,4 +16,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+@media screen and (max-width:500px) {
+  body {
+    background-size: auto;
+  }
 }

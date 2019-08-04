@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Locations from './Locations/Locations'
-import ErrorBoundary from '../../components/UI/ErrorBoundary/ErrorBoundary'
+import Locations from '../../components/Locations/Locations'
 import * as actions from '../../store/actions/favorites'
 import classes from './Favorites.module.scss'
 
 class Favorites extends Component {
     state = {}
+
     async componentDidMount() {
         await this.props.onLoadFavorites()
-        console.log(this.props.history);
-        
+    }
+
+    componentWillUnmount(){
+        this.props.onClearFavorites()
     }
     render() {
         return (
             <section className={classes.favorites}>
-            <ErrorBoundary>
                 <Locations locations={this.props.favoriteList}/>
-            </ErrorBoundary>
             </section>
         );
     }
@@ -31,7 +31,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLoadFavorites: () => dispatch(actions.loadFavorites())
+        onLoadFavorites: () => dispatch(actions.loadFavorites()),
+        onClearFavorites: () => dispatch(actions.clearFavorites()),
     };
 };
 

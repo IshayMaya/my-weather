@@ -1,10 +1,15 @@
 .day {
     clip-path: polygon(50% 0%, 100% 0, 100% 90%, 50% 100%, 0 90%, 0 0);
-    background-color: #eeeeee75;
     padding: 5px;
     box-sizing: border-box;
     border-radius: 3px;
-    // height: 90%;
+    border-right: 1px solid #eeeeee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &:last-child{
+        border: none;
+    }
 
     h2,p {
         margin: 0;
@@ -15,6 +20,13 @@
     }
 }
 
+
+.day-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
 .degrees {
     display: flex;
     justify-content: center;
@@ -23,14 +35,59 @@
 
     :nth-child(1) {
         font-size: .9rem;
-        color: #00000082;
+        color: #b4a9a9;
+        
         font-weight: 700;
         margin-right: 5px;
     }
     :nth-child(2) {
         font-size: 1.2rem;
-        color: #000000ab;
+        color: #eeeeee;
         font-weight: 900;
     }
+
+}
+
+@media screen and (max-width: 500px) {
+
+    .day {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        clip-path: none;
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 0;
+        border-right: none;
+        border-bottom: 1px solid #eeeeee;
+
+        &:last-child{
+            border: none;
+        }
+
+        h2 { 
+            font-size: 1.3rem;
+        }
+    
+        img {
+            height: 1.8rem;
+        }
+    }
+
+    .day-body { 
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        min-width: 30%;
+
+        p { 
+            display: none;
+        }
+
+
+    }
+    
 
 }

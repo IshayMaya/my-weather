@@ -10,7 +10,7 @@ import * as actions from '../../store/actions/favorites'
 
 const weatherDetails = props =>  {
     let detailsBody = <Spinner />
-    if (props.dailyForecasts) detailsBody = (
+    if (props.dailyForecasts && !props.isLoading) detailsBody = (
         <div className={classes.details}>
             <Headline forecast={props.currentConditions} location={props.currentLocation} addToFavorites={props.onAddToFavorites}/>
             <section className={classes['details-bottom']}>
@@ -27,7 +27,7 @@ const weatherDetails = props =>  {
 
 const mapStateToProps = state => {
     return {
-        favoriteList: state.forecast.favoriteList,
+        isLoading:state.forecast.isLoadingForecast
     };
 };
 

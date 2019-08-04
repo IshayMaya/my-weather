@@ -1,0 +1,12 @@
+.error-modal {
+    padding: 20px;
+    background-color: #eeeeee;
+    color: black;
+    border-radius: 3px;
+    position: absolute;
+    font-weight: 900;
+    left: 30vw;
+    width: 40vw;
+    transition: .5s ease;
+    z-index: 200;
+}

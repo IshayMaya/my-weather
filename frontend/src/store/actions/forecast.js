@@ -7,19 +7,48 @@ export const setForecast = forecast => {
         forecast
     }
 }
+
+export const toggleForecastSpinner = (isLoading) => {
+    return {
+        type: actionTypes.TOGGLE_FORECAST_SPINNER,
+        isLoading
+    }
+
+}
+
+export const handleError = () => {
+    return {
+        type:actionTypes.HANDLE_ERROR
+    }
+}
+
+export const closeErrorModal = () => {
+    return {
+        type:actionTypes.CLOSE_ERROR_MODAL
+    }
+}
+
 export const getFiveDayForecast = cityDetails => {
     return async(dispatch) => {
-        let forecast = await weatherService.getForecastByCity(cityDetails)
-        // let res = await weatherService.getForecastByCity(cityName)
-        dispatch(setForecast(forecast))
+        dispatch(toggleForecastSpinner(true))
+        try { 
+            let forecast = await weatherService.getForecastByCity(cityDetails)
+            dispatch(toggleForecastSpinner(false))
+            dispatch(setForecast(forecast))
+        } catch (err) {
+            dispatch(handleError())
+        }
     }
 }
 
 export const getCityNames = cityName => {
     return async(dispatch) => {
-        let cityNameList = await weatherService.getCityNames(cityName)
-        if (cityNameList.length === 1) dispatch(getFiveDayForecast(cityNameList[0]))
-        else return cityNameList
+        try {
+            let cityNameList = await weatherService.getCityNames(cityName)
+            if (cityNameList.length === 1) dispatch(getFiveDayForecast(cityNameList[0]))
+            else return cityNameList
+        } catch (defaultWeather) {
+            dispatch(handleError()) 
+        }
     }
-
 }

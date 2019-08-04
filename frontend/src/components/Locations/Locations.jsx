@@ -2,18 +2,20 @@ import React,{Component} from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import Location from './Location/Location'
-import Spinner from '../../../components/UI/Spinner/Spinner'
+import Spinner from '../UI/Spinner/Spinner'
 import classes from './Locations.module.scss'
-import * as actions from '../../../store/actions/forecast'
+import * as actions from '../../store/actions/forecast'
 
 class Locations extends Component {
     state = { 
+        loadingCurrentWeather:null
 
     }
 
-    locationClickHandler = async (cityName) => {
-        await this.props.onGetCurrentWeather(cityName)
-        this.props.history.push(`/${cityName}`)
+    locationClickHandler = async (location) => {
+        this.setState({loadingCurrentWeather:location.city})
+        await this.props.onGetCurrentWeather(location)
+        this.props.history.push(`/${location.city}`)
     }
 
 
@@ -22,7 +24,8 @@ class Locations extends Component {
         this.props.locations.map(loc => (
             <Location location={loc} 
             key={loc.Key} 
-            locationClicked={() => this.locationClickHandler(loc.city)}/>
+            locationClicked={() => this.locationClickHandler(loc)}
+            showSpinner={this.state.loadingCurrentWeather === loc.city}/>
         ))
         return <ul className={classes.locations}>{locationItems}</ul>
     }

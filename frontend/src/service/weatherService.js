@@ -1,14 +1,10 @@
 import axios from 'axios'
 const API_KEY = 'CIqHWgxAnuE2qFgvJs2bJwVSZG3hRGGk'
 
-const toggleLocationFromFavorites = async ({ Key, city }, conditions) => {
-    let  location = { Key, city, conditions }
+const toggleLocationFromFavorites = async (location, conditions) => {
+    location.conditions = conditions 
     const favorites = await getFavorites()
-    console.log('favorites : ', favorites);
-    console.log('Key :',Key);
-    
-
-    const favoriteLocation = favorites.find(fav => fav.Key === Key)
+    const favoriteLocation = favorites.find(fav => fav.Key === location.Key)
     if (!favoriteLocation)  await addToFavorites(location)
     else await removeFromFavorites(favoriteLocation)
     location.isOnFavorites = !favoriteLocation
@@ -16,8 +12,6 @@ const toggleLocationFromFavorites = async ({ Key, city }, conditions) => {
 }
 
 const removeFromFavorites = async (location) => {
-    console.log('id to remove : ', location._id);
-
     try {
         await axios.delete(`https://my-weather-65d57.firebaseio.com/favorites/${location._id}.json`)
         return location
@@ -49,53 +43,51 @@ const getFavorites = async () => {
     })
 }
 
-const getForecastByCity = async (name) => {
-    let forecast = JSON.parse(localStorage.getItem('weather'))
+const getCityNames = async (name) => {
+    try {
+        let response = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${name}`)
+        localStorage.setItem('defaultCity',JSON.stringify(response.data))
+        return response.data
+    } catch (err ){
+        console.log(err);
+        return JSON.parse(localStorage.getItem('defaultCity'))
+    }
+   
+}
+
+const getForecastByCity = async (cityDetails) => {
+    let city = cityDetails.city || cityDetails.LocalizedName
+    let country = cityDetails.country || cityDetails.Country.LocalizedName
+    let {Key} = cityDetails
+    let forecast = await getFiveDayForecast(Key)
+    forecast.location = { city, Key, country }
     let favorites = await getFavorites()
     forecast.location.isOnFavorites = Object.values(favorites).some(fav => fav.Key === forecast.location.Key)
-    return Promise.resolve(forecast)
+    forecast.currentConditions = await getCurrentConditions(Key)
+    localStorage.setItem('weather', JSON.stringify(forecast))
+    return forecast
 }
-
-const getCityNames = async (name) => {
-    let response = JSON.parse(localStorage.getItem('defaultCity'))
-    return Promise.resolve(response)
-}
-// const getCityNames = async (name) => {
-//     let response = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${name}`)
-//     localStorage.setItem('defaultCity',JSON.stringify(response.data))
-//     return response.data
-// }
-
-// const getForecastByCity = async (cityDetails) => {
-//     // let response = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${name}`)
-//     let { LocalizedName: city,Key } = cityDetails
-//     let { LocalizedName: country } = cityDetails.Country
-//     let forecast = await getFiveDayForecast(Key)
-//     forecast.location = { city, Key, country }
-//     let favorites = await getFavorites()
-//     forecast.location.isOnFavorites = Object.values(favorites).some(fav => fav.Key === forecast.location.Key)
-//     forecast.currentConditions = await getCurrentConditions(Key)
-//     localStorage.setItem('weather', JSON.stringify(forecast))
-//     return forecast
-// }
 
 const getFiveDayForecast = async (cityKey) => {
-    let response = await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=${API_KEY}&metric=true`)
-    return response.data
+    try {
+        let response = await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=${API_KEY}&metric=true`)
+        return response.data
+    } catch (err) {
+        console.log(err);
+        return JSON.parse(localStorage.getItem('weather'))
+    }
 
 }
 
 const getCurrentConditions = async (cityKey) => {
-    let response = await axios.get(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${API_KEY}`)
-    return response.data[0]
-}
-
-
-const _createId = () => {
-    let chars = 'abcdefg1234567890'
-    return Array.from({ length: 10 }, (_, i) => chars.charAt(Math.floor(Math.random() * chars.length)))
-        .join('')
-
+    try { 
+        let response = await axios.get(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${API_KEY}`)
+        localStorage.setItem('currentConditions',JSON.stringify(response.data[0]))
+        return response.data[0]
+    } catch (err) {
+        console.log(err)
+        return JSON.parse(localStorage.getItem('currentConditions'))
+    }
 }
 
 export default {

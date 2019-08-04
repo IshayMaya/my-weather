@@ -29,7 +29,11 @@ export const setFavorites = (favorites) => {
 export const loadFavorites = () => {
     return async (dispatch) => {
         let favorites = await weatherService.getFavorites()
-        console.log('got this : ',favorites);
         dispatch(setFavorites(favorites))
+    }
+}
+export const clearFavorites = () => {
+    return {
+        type: actionTypes.CLEAR_FAVORITES
     }
 }
