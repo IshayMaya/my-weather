@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/my-weather/static/css/main.d7ae75bc.chunk.css",
+    "main.js": "/my-weather/static/js/main.9ce9762c.chunk.js",
+    "main.js.map": "/my-weather/static/js/main.9ce9762c.chunk.js.map",
+    "runtime~main.js": "/my-weather/static/js/runtime~main.37f04531.js",
+    "runtime~main.js.map": "/my-weather/static/js/runtime~main.37f04531.js.map",
+    "static/js/2.dc73f5a8.chunk.js": "/my-weather/static/js/2.dc73f5a8.chunk.js",
+    "static/js/2.dc73f5a8.chunk.js.map": "/my-weather/static/js/2.dc73f5a8.chunk.js.map",
+    "index.html": "/my-weather/index.html",
+    "precache-manifest.5685eed01db87ce7943799c0ef1e3598.js": "/my-weather/precache-manifest.5685eed01db87ce7943799c0ef1e3598.js",
+    "service-worker.js": "/my-weather/service-worker.js",
+    "static/css/main.d7ae75bc.chunk.css.map": "/my-weather/static/css/main.d7ae75bc.chunk.css.map",
+    "static/media/index.css": "/my-weather/static/media/forest3.060ba68b.jpg"
+  }
+}
