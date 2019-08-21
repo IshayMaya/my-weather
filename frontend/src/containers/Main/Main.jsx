@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SearchBar from '../../components/SearchBar/SearchBar'
 import WeatherDetails from '../../components/WeatherDetails/WeatherDetails'
-import * as actions from '../../store/actions/forecast'
+import * as forecastActions from '../../store/actions/forecast'
+import * as favoriteActions from '../../store/actions/favorites'
 import classes from './Main.module.scss'
 
 
@@ -13,11 +14,10 @@ class Main extends Component {
         cityList: null
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         let { dailyForecasts } = this.props
-        if (!dailyForecasts) await this.props.onGetCityNames(this.state.defaultCity)
+        if (!dailyForecasts) this.props.onForecastLoad()
     }
-
 
     cityNameChangeHandler = ev => {
         let { value: cityName } = ev.target
@@ -29,16 +29,16 @@ class Main extends Component {
         ev.preventDefault()
         let { cityName } = this.state
         let cityList = await this.props.onGetCityNames(cityName)
-        this.setState({ cityList,cityName:'' })
+        this.setState({ cityList, cityName: '' })
     }
 
     getForecastHandler = async (city) => {
-        this.setState({cityList:null})
+        this.setState({ cityList: null })
         await this.props.onForecastLoad(city)
     }
 
     closeDropDownHandler = () => {
-        this.setState({cityList: null})
+        this.setState({ cityList: null })
     }
 
 
@@ -52,11 +52,13 @@ class Main extends Component {
                     cityList={this.state.cityList}
                     cityClicked={this.getForecastHandler}
                 />
-                    <WeatherDetails
-                        dailyForecasts={this.props.dailyForecasts}
-                        currentConditions={this.props.currentConditions}
-                        currentLocation={this.props.currentLocation}
-                    />
+                <WeatherDetails
+                    dailyForecasts={this.props.dailyForecasts}
+                    currentConditions={this.props.currentConditions}
+                    currentLocation={this.props.currentLocation}
+                    isLoading={this.props.isLoading}
+                    onAddToFavorites={this.props.onAddToFavorites}
+                />
             </section>
         );
     }
@@ -66,14 +68,16 @@ const mapStateToProps = state => {
     return {
         dailyForecasts: state.forecast.fiveDayForecast,
         currentConditions: state.forecast.currentConditions,
-        currentLocation: state.forecast.currentLocation
+        currentLocation: state.forecast.currentLocation,
+        isLoading: state.forecast.isLoadingForecast
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onForecastLoad: (cityName) => dispatch(actions.getFiveDayForecast(cityName)),
-        onGetCityNames: (cityName) => dispatch(actions.getCityNames(cityName))
+        onForecastLoad: (city) => dispatch(forecastActions.getFiveDayForecast(city)),
+        onGetCityNames: (cityName) => dispatch(forecastActions.getCityNames(cityName)),
+        onAddToFavorites: () => dispatch(favoriteActions.addToFavorites())
     };
 };
 

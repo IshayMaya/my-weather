@@ -1,99 +1,43 @@
-import axios from 'axios'
+/* eslint-disable import/first */
+
 const API_KEY = 'CIqHWgxAnuE2qFgvJs2bJwVSZG3hRGGk'
-
-const toggleLocationFromFavorites = async (location, conditions) => {
-    location.conditions = conditions 
-    const favorites = await getFavorites()
-    const favoriteLocation = favorites.find(fav => fav.Key === location.Key)
-    if (!favoriteLocation)  await addToFavorites(location)
-    else await removeFromFavorites(favoriteLocation)
-    location.isOnFavorites = !favoriteLocation
-    return location
-}
-
-const removeFromFavorites = async (location) => {
-    try {
-        await axios.delete(`https://my-weather-65d57.firebaseio.com/favorites/${location._id}.json`)
-        return location
-    } catch (err) {
-        console.log(err)
-    }
-}
-
-const addToFavorites = async (location) => {
-    try {
-        await axios.post('https://my-weather-65d57.firebaseio.com/favorites.json', location)
-        return location
-    } catch (err) {
-        console.log(err)
-    }
-}
-
-const getFavorites = async () => {
-    let response
-    try {
-        response = await axios.get('https://my-weather-65d57.firebaseio.com/favorites.json')
-    } catch (err) {
-        return []
-    }
-    if (!response.data) return []
-    return Object.values(response.data).map((d, i) => {
-        d._id = Object.keys(response.data)[i]
-        return d
-    })
-}
+import favoriteService from './favoriteService'
+import * as axios  from './axiosService'
 
 const getCityNames = async (name) => {
-    try {
-        let response = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${name}`)
-        localStorage.setItem('defaultCity',JSON.stringify(response.data))
-        return response.data
-    } catch (err ){
-        console.log(err);
-        return JSON.parse(localStorage.getItem('defaultCity'))
-    }
-   
+    let response = await axios.weatherAxios.get(`locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${name}`)
+    return response.data
 }
 
 const getForecastByCity = async (cityDetails) => {
+    if (!cityDetails) cityDetails = await _getDefaultCity()
     let city = cityDetails.city || cityDetails.LocalizedName
     let country = cityDetails.country || cityDetails.Country.LocalizedName
     let {Key} = cityDetails
     let forecast = await getFiveDayForecast(Key)
     forecast.location = { city, Key, country }
-    let favorites = await getFavorites()
-    forecast.location.isOnFavorites = Object.values(favorites).some(fav => fav.Key === forecast.location.Key)
+    let favorites = await favoriteService.getFavorites()
+    forecast.location.isOnFavorites = Object.values(favorites).some(fav => fav.Key == forecast.location.Key)
     forecast.currentConditions = await getCurrentConditions(Key)
-    localStorage.setItem('weather', JSON.stringify(forecast))
     return forecast
 }
 
 const getFiveDayForecast = async (cityKey) => {
-    try {
-        let response = await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=${API_KEY}&metric=true`)
-        return response.data
-    } catch (err) {
-        console.log(err);
-        return JSON.parse(localStorage.getItem('weather'))
-    }
-
+    let response = await axios.weatherAxios.get(`forecasts/v1/daily/5day/${cityKey}?apikey=${API_KEY}&metric=true`)
+    return response.data
 }
 
 const getCurrentConditions = async (cityKey) => {
-    try { 
-        let response = await axios.get(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${API_KEY}`)
-        localStorage.setItem('currentConditions',JSON.stringify(response.data[0]))
-        return response.data[0]
-    } catch (err) {
-        console.log(err)
-        return JSON.parse(localStorage.getItem('currentConditions'))
-    }
+    let response = await axios.weatherAxios.get(`currentconditions/v1/${cityKey}?apikey=${API_KEY}`)
+    return response.data[0]
+}
+
+const _getDefaultCity = async() => {
+    let response = await axios.dbAxios.get(`default.json`)
+    return response.data.location
 }
 
 export default {
     getForecastByCity,
-    addToFavorites,
-    getFavorites,
-    toggleLocationFromFavorites,
     getCityNames
 }

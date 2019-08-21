@@ -9,6 +9,7 @@
     
     
     input {
+        outline: none;
         border: 1px solid #6d9eaa;
         background-color: #eeeeee;
         border-radius: 3px;
@@ -26,7 +27,7 @@
     ul {
         list-style: none;
         width: 100%;
-        padding:0;
+        padding:0 5px;
         margin: 0;
         text-align: left;
         box-sizing: border-box;
@@ -34,9 +35,11 @@
         background-color: #eeeeee;
         border-right: 1px solid #6d9eaa;
         border-left: 1px solid #6d9eaa;
+        border-bottom: 1px solid #6d9eaa;
         top: 38px;
         z-index: 1;
-        transition: .3s ease;
+        animation-duration: .5s;
+        animation-name: stretchDown;
 
         li { 
             cursor: pointer;
@@ -51,3 +54,13 @@
         }
     }
 }
+
+@keyframes stretchDown {
+    from {
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    }
+  
+    to {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }

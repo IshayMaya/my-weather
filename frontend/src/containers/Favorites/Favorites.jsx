@@ -14,6 +14,7 @@ class Favorites extends Component {
     componentWillUnmount(){
         this.props.onClearFavorites()
     }
+    
     render() {
         return (
             <section className={classes.favorites}>
@@ -25,7 +26,7 @@ class Favorites extends Component {
 
 const mapStateToProps = state => {
     return {
-        favoriteList: state.forecast.favoriteList,
+        favoriteList: state.favorite.favoriteList,
     };
 };
 
